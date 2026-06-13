@@ -1,0 +1,7 @@
+# 阶段1 仅需 Streamlit。
+# JSON / SQLite / docx(zip+xml) 解析全部用 Python 标准库，无重型依赖。
+streamlit>=1.30,<2.0
+
+# 可选：若想用 python-docx 重写 docx 解析，可解除下行注释。
+# 当前 scripts/import_data.py 用标准库 zipfile+re 解析 docx，无需此依赖。
+# python-docx>=1.1.0

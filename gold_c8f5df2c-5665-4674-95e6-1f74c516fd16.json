@@ -1,0 +1,279 @@
+{
+  "case_id": "c8f5df2c-5665-4674-95e6-1f74c516fd16",
+  "case_name": "Brown & Anor v Sestras & Ors",
+  "source_file": "ew-cases-EWHC-KB-2023-1220.xml",
+  "original_top_level_meta": {
+    "decision_type": "FINAL_LIABILITY_JUDGMENT",
+    "procedure_stage": "FIRST_INSTANCE",
+    "is_liability_suitable": "YES",
+    "is_specific_tort": "YES",
+    "tort_cause_of_action_list": [
+      "negligence"
+    ]
+  },
+  "top_level_corrections": {
+    "decision_type": {
+      "value": "FINAL_LIABILITY_JUDGMENT",
+      "original": "FINAL_LIABILITY_JUDGMENT",
+      "status": "UNREVIEWED",
+      "reason": null
+    },
+    "is_liability_suitable": {
+      "value": "YES",
+      "original": "YES",
+      "status": "UNREVIEWED",
+      "reason": null
+    },
+    "is_specific_tort": {
+      "value": "YES",
+      "original": "YES",
+      "status": "UNREVIEWED",
+      "reason": null
+    },
+    "procedure_stage": {
+      "value": "FIRST_INSTANCE",
+      "original": "FIRST_INSTANCE",
+      "status": "UNREVIEWED",
+      "reason": null
+    },
+    "tort_cause_of_action_list": {
+      "value": [
+        "negligence"
+      ],
+      "original": [
+        "negligence"
+      ],
+      "status": "UNREVIEWED",
+      "reason": null
+    }
+  },
+  "classification": "侵权",
+  "classification_note": null,
+  "fields": [
+    {
+      "field_path": "I. LEGAL ELEMENT/1. Facts",
+      "value": "The material facts of the case are as follows:  \nOn 16 July 2017, a serious road traffic accident occurred on the A10 southbound carriageway. The first claimant, Bronte Brown (a minor), suffered life-changing injuries while a rear-seat passenger in a Peugeot driven by his mother, the third defendant, Ms. Danielle Sellers. A dark vehicle, alleged by the claimant to be a black Mercedes Benz driven by the first defendant, Mr. Cosmin Sestras, performed a dangerous undertaking maneuver. Ms. Sellers lost control of her vehicle, which left the road and plunged down an embankment.  \n\nThe case hinges on whether Mr. Sestras' Mercedes was involved in the accident and whether his alleged conduct constituted negligent driving. Alternatively, the claimant alleges negligence on the part of Ms. Sellers for losing control of the vehicle. Notably, Mr. Sestras denies any involvement in the accident.",
+      "status": "CORRECT",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "I. LEGAL ELEMENT/2. Issue Framing",
+      "value": "**Characterisation**: Negligence  \nThe court is required to consider whether the action is properly analysable under the tort of negligence, engaging the distinct tort-specific elements of duty of care, breach, causation, and actionable damage.\n\nThe key issues framed for determination are:",
+      "status": "CORRECT",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "I. LEGAL ELEMENT/1. Was the Mercedes driven by Mr. Sestras correctly identified as involved in the accident?",
+      "value": "",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "I. LEGAL ELEMENT/2. If yes, was the accident caused by the negligent driving of Mr. Sestras?",
+      "value": "",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "I. LEGAL ELEMENT/3. Alternatively, was the accident caused by the negligent driving of Ms. Sellers?",
+      "value": "",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "I. LEGAL ELEMENT/3. Applicable Law",
+      "value": "",
+      "status": "CORRECT",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "I. LEGAL ELEMENT/3.1 Sources",
+      "value": "Applicable law: The common law of England and Wales.",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "I. LEGAL ELEMENT/3.2 Precedent System and Method of Application",
+      "value": "The claimant must establish, on the balance of probabilities:  \na) That the first defendant owed a duty of care.  \nb) That the driving of the first defendant or the third defendant fell below the appropriate standard of care expected of a reasonably competent motorist.  \nc) That such breach caused the accident.  \nd) That the first claimant suffered actionable damage (life-changing injuries).\n\nNo novel issues of duty arise here, as motorists owe a recognised duty of care to other road users.\n\n---",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "II. LIABILITY/1. Tort-Specific Elements",
+      "value": "",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "II. LIABILITY/Negligence Elements",
+      "value": "",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "II. LIABILITY/1. Tort-Specific Elements/A. Duty of Care",
+      "value": "Both first and third defendants are subject to the established duty of care owed by motorists to other road users. This duty was not disputed by either party.",
+      "status": "CORRECT",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "II. LIABILITY/1. Tort-Specific Elements/B. Breach of Duty",
+      "value": "",
+      "status": "CORRECT",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "II. LIABILITY/1. Tort-Specific Elements/B. Breach of Duty/1. First Defendant (Mr. Sestras)**:",
+      "value": "- The claimant alleges that the first defendant's driving fell below the standard of a reasonably competent driver by tailgating, suddenly undertaking, and cutting in front of the Peugeot, thus causing danger on the road.\n   - Mr. Sestras denies involvement in the accident, disavowing the conduct alleged and asserting that the driver of the dark car was an unidentified third party.",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "II. LIABILITY/1. Tort-Specific Elements/B. Breach of Duty/2. Third Defendant (Ms. Sellers)**:",
+      "value": "- The claimant alternatively contends that Ms. Sellers breached her duty of care by failing to maintain control of her vehicle when faced with the alleged undertaking maneuver.  \n   - Ms. Sellers, however, defends her actions as an instinctive and reasonable response to avoid an imminent collision.",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "II. LIABILITY/1. Tort-Specific Elements/C. Causation (Factual & Legal)",
+      "value": "- **Factual causation**: The court must determine whether the first defendant's or third defendant's alleged negligent driving was the actual cause of the accident. The but-for test applies here.\n  - Whether the claimant’s injuries would not have occurred but for the manner of driving alleged against Mr. Sestras or Ms. Sellers.  \n\n- **Legal causation (remoteness)**: The road traffic accident and consequent injuries suffered by the claimant must be reasonably foreseeable consequences of the defendants’ alleged breach.",
+      "status": "CORRECT",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "II. LIABILITY/1. Tort-Specific Elements/D. Actionable Damage",
+      "value": "The claimant suffered life-changing physical injuries. This satisfies the requirement for actionable damage, as negligence is not actionable per se and actual harm must be proven.\n\n---",
+      "status": "CORRECT",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "III. CONCLUSION/1. Defence",
+      "value": "",
+      "status": "CORRECT",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "III. CONCLUSION/1.1 For Mr. Sestras (First Defendant)",
+      "value": "- **Denial of Involvement**: Mr. Sestras argues that he was not the driver who engaged in the alleged undertaking maneuver and that the dark car was another, unidentified vehicle. He submits evidence that his Mercedes was equipped with driver-assist technology, allegedly making the dangerous maneuvers impossible.\n- Mr. Sestras alternatively blames Ms. Sellers for losing control of the vehicle.",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "III. CONCLUSION/1.2 For Ms. Sellers (Third Defendant)",
+      "value": "- **Instinctive Response Defence**: Ms. Sellers asserts that her loss of control was a direct and unavoidable response to the first defendant's dangerous maneuver.",
+      "status": "UNREVIEWED",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "III. CONCLUSION/2. Remedy",
+      "value": "For the first claimant, the sought remedy is an award of **compensatory damages** for personal injury, including damages for pain and suffering, loss of amenity, and any consequential financial loss.",
+      "status": "CORRECT",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "III. CONCLUSION/3. Judgement",
+      "value": "The court’s determinations are as follows:",
+      "status": "INCORRECT",
+      "reason": null,
+      "source_quote": null,
+      "source_offset": null,
+      "version": 1
+    },
+    {
+      "field_path": "III. CONCLUSION/1. On **identification of the Mercedes Benz driven by Mr. Sestras**: Findings of fact regarding lay and expert evidence must be assessed to determine whether involvement was established on the balance of probabilities.",
+      "value": "On identification of the Mercedes Benz driven by Mr. Sestras: The judge found the key identification evidence compelling. Bobby Leigh Graham was assessed as an \"impressive, careful witness\" whose detailed description of the vehicle was \"highly persuasive\". Critically, the anonymous caller — deemed credible — provided a registration number confirmed as Mr. Sestras' own Mercedes. By contrast, the alibi evidence of Mr. and Mrs. Catinca, passengers in Mr. Sestras' car, was found respectively \"unimpressive\" and \"unsatisfactory\", materially undermining the first defendant's denial of involvement.\n\n",
+      "status": "UNREVIEWED",
+      "reason": "",
+      "source_quote": "",
+      "source_offset": null,
+      "version": 3
+    },
+    {
+      "field_path": "III. CONCLUSION/2. If identified, the court must assess whether **Mr. Sestras’ driving constitutes negligence** and caused the accident.",
+      "value": "On whether Mr. Sestras' driving constitutes negligence: The evidence as assessed by the judge points toward the dangerous undertaking manoeuvre having been carried out by Mr. Sestras. Such conduct — tailgating and suddenly cutting in front of the Peugeot — unambiguously fell below the standard of a reasonably competent driver.",
+      "status": "UNREVIEWED",
+      "reason": "",
+      "source_quote": "",
+      "source_offset": null,
+      "version": 2
+    },
+    {
+      "field_path": "III. CONCLUSION/3. Alternatively, the court evaluates whether **Ms. Sellers’ loss of control** constitutes a breach of duty of care and caused the accident.",
+      "value": "On whether Ms. Sellers' loss of control constitutes negligence: The judge found Ms. Sellers' split-second decision to steer left \"persuasive and logical\" in the agony of the moment, characterising it as an instinctive emergency response rather than an independent breach of duty.",
+      "status": "UNREVIEWED",
+      "reason": "",
+      "source_quote": "",
+      "source_offset": null,
+      "version": 2
+    },
+    {
+      "field_path": "III. CONCLUSION/2. Summary of Court’s Findings",
+      "value": "Outcome: On the evidence assessed within the provided text, liability is indicated against the first defendant. The formal dispositif, including any apportionment and quantum directions, falls outside the excerpt provided.",
+      "status": "INCORRECT",
+      "reason": "",
+      "source_quote": "",
+      "source_offset": null,
+      "version": 3
+    }
+  ]
+}
