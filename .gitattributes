@@ -1,0 +1,5 @@
+# Mark SQLite databases as binary to prevent git text/CRLF conversion
+# which corrupts the file on platforms with core.autocrlf=true.
+*.db binary
+*.db-wal binary
+*.db-shm binary

@@ -8,9 +8,12 @@ This module ONLY knows about connections and schema. All business logic lives in
 ``service/annotation_service.py``. The UI must never import this module directly.
 """
 
+import logging
 import os
 import sqlite3
 import threading
+
+logger = logging.getLogger(__name__)
 
 # Default DB lives next to the repo root (one level up from storage/).
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -127,6 +130,197 @@ def init_db(db_path: str = DEFAULT_DB_PATH) -> sqlite3.Connection:
     conn.executescript(SCHEMA)
     conn.commit()
     return conn
+
+
+def _is_db_healthy(db_path: str = DEFAULT_DB_PATH) -> bool:
+    """Quick smoke-test: open the file and run the query that fails on Streamlit Cloud."""
+    if not os.path.exists(db_path):
+        return False
+    try:
+        conn = sqlite3.connect(db_path, check_same_thread=False)
+        conn.row_factory = sqlite3.Row
+        result = conn.execute("PRAGMA integrity_check").fetchone()
+        if result[0] != "ok":
+            logger.warning("DB integrity_check failed: %s", result[0])
+            conn.close()
+            return False
+        # run the exact query that was failing
+        conn.execute(
+            "SELECT status, COUNT(*) AS c FROM annotation_fields GROUP BY status"
+        ).fetchall()
+        conn.close()
+        return True
+    except Exception as exc:
+        logger.warning("DB health check failed: %s", exc)
+        try:
+            conn.close()
+        except Exception:
+            pass
+        return False
+
+
+def ensure_db(db_path: str = DEFAULT_DB_PATH):
+    """Verify the database is usable; rebuild from JSON + docx if it is corrupt.
+
+    Call this once at application startup (e.g. in streamlit_app.py) BEFORE
+    any service-layer code runs.  If the existing .db file passes a basic
+    integrity / query smoke-test, this is a no-op.  Otherwise it deletes
+    the corrupt file and re-imports from the checked-in source data so the
+    app can self-heal on Streamlit Cloud without manual intervention.
+
+    Rebuild priority:
+      1. ``data/annotation_state_snapshot.json`` — a full export produced by
+         ``svc.export_gold()`` that preserves every status / correction / quote.
+      2. Fallback: ``cases_with_extracted_output.json`` + docx (loses annotations
+         made after the initial import, but the app is at least usable).
+    """
+    if _is_db_healthy(db_path):
+        logger.info("DB healthy at %s", db_path)
+        return
+
+    logger.warning("DB at %s is missing or corrupt – rebuilding from source data …",
+                   db_path)
+
+    # clear any cached connection for this path
+    cache = getattr(_local, "conns", None)
+    if cache and db_path in cache:
+        try:
+            cache[db_path].close()
+        except Exception:
+            pass
+        del cache[db_path]
+
+    # remove corrupt file
+    if os.path.exists(db_path):
+        os.remove(db_path)
+        logger.info("Removed corrupt DB file")
+
+    # lazy imports to avoid circular deps at module level
+    import json
+    import sys
+
+    data_dir = os.path.join(_REPO_ROOT, "data")
+    snapshot_path = os.path.join(data_dir, "annotation_state_snapshot.json")
+
+    # ── Strategy 1: full snapshot (preserves all annotation state) ──────────
+    if os.path.exists(snapshot_path):
+        logger.info("Rebuilding from annotation_state_snapshot.json …")
+        conn = init_db(db_path)
+        _rebuild_from_snapshot(conn, snapshot_path)
+        n = conn.execute("SELECT COUNT(*) FROM annotation_fields").fetchone()[0]
+        logger.info("DB rebuilt from snapshot with %d annotation fields", n)
+        return
+
+    # ── Strategy 2: import pipeline from JSON + docx ───────────────────────
+    scripts_dir = os.path.join(_REPO_ROOT, "scripts")
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+    from import_data import import_cases, match_docx_to_fields, JSON_PATH, DOCX_PATH
+
+    conn = init_db(db_path)
+    with open(JSON_PATH, encoding="utf-8") as f:
+        cases = json.load(f)
+    import_cases(conn, cases)
+    conn.commit()
+    logger.info("Imported %d cases from JSON", len(cases))
+
+    if os.path.exists(DOCX_PATH):
+        match_docx_to_fields(conn)
+        conn.commit()
+        logger.info("Applied docx annotations")
+    else:
+        logger.info("No docx file at %s – skipped annotation matching", DOCX_PATH)
+
+    n = conn.execute("SELECT COUNT(*) FROM annotation_fields").fetchone()[0]
+    logger.info("DB rebuilt (pipeline) with %d annotation fields", n)
+
+
+def _rebuild_from_snapshot(conn, snapshot_path: str):
+    """Populate an empty (schema-initialised) DB from an export_gold() snapshot.
+
+    The snapshot JSON is a list of case objects, each containing fields,
+    top_level_corrections, and classification — everything needed to fully
+    restore the annotation state.
+    """
+    import json
+    from datetime import datetime, timezone
+
+    with open(snapshot_path, encoding="utf-8") as f:
+        cases = json.load(f)
+
+    now = datetime.now(timezone.utc).isoformat()
+
+    # We also need the original case data (case_text, extracted_output, top_level_meta)
+    data_dir = os.path.dirname(snapshot_path)
+    json_path = os.path.join(data_dir, "cases_with_extracted_output.json")
+    original_lookup = {}
+    if os.path.exists(json_path):
+        with open(json_path, encoding="utf-8") as f:
+            for rec in json.load(f):
+                original_lookup[rec["case_id"]] = rec
+
+    for case in cases:
+        cid = case["case_id"]
+        orig = original_lookup.get(cid, {})
+        top_level_fields = ["decision_type", "procedure_stage",
+                            "is_liability_suitable", "is_specific_tort",
+                            "tort_cause_of_action_list"]
+        meta = {k: orig.get(k) for k in top_level_fields}
+
+        conn.execute(
+            "INSERT OR REPLACE INTO cases (case_id, case_name, case_text, "
+            "source_file, original_extracted_output, top_level_meta, imported_at) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (cid, case.get("case_name", ""), orig.get("case_text", ""),
+             case.get("source_file"), orig.get("extracted_output", ""),
+             json.dumps(meta, ensure_ascii=False), now),
+        )
+
+        # annotation fields
+        for i, f in enumerate(case.get("fields", []), 1):
+            conn.execute(
+                "INSERT OR IGNORE INTO annotation_fields (case_id, field_path, "
+                "field_order, current_value, status, correction_reason, "
+                "source_text_quote, source_text_offset, annotator_id, version, "
+                "updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'default_user', ?, ?)",
+                (cid, f["field_path"], i, f.get("value"),
+                 f.get("status", "UNREVIEWED"), f.get("reason"),
+                 f.get("source_quote"), f.get("source_offset"),
+                 f.get("version", 1), now),
+            )
+
+        # top-level corrections
+        tl = case.get("top_level_corrections", {})
+        for fname, info in tl.items():
+            orig_val = info.get("original")
+            cur_val = info.get("value")
+            if isinstance(orig_val, str):
+                pass  # already encoded
+            else:
+                orig_val = json.dumps(orig_val, ensure_ascii=False)
+            if isinstance(cur_val, str):
+                pass
+            else:
+                cur_val = json.dumps(cur_val, ensure_ascii=False)
+            conn.execute(
+                "INSERT OR IGNORE INTO top_level_corrections (case_id, field_name, "
+                "original_value, current_value, status, reason, annotator_id, "
+                "version, updated_at) VALUES (?, ?, ?, ?, ?, ?, 'default_user', 1, ?)",
+                (cid, fname, orig_val, cur_val,
+                 info.get("status", "UNREVIEWED"), info.get("reason"), now),
+            )
+
+        # classification
+        cls = case.get("classification")
+        if cls:
+            conn.execute(
+                "INSERT OR IGNORE INTO case_classification (case_id, classification, "
+                "note, annotator_id, version, updated_at) "
+                "VALUES (?, ?, ?, 'default_user', 1, ?)",
+                (cid, cls, case.get("classification_note"), now),
+            )
+
+    conn.commit()
 
 
 if __name__ == "__main__":
