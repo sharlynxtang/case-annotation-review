@@ -17,6 +17,13 @@ from datetime import datetime, timezone
 
 from storage import db
 
+# Ensure schema exists (idempotent CREATE TABLE IF NOT EXISTS).
+# The DB file ships pre-populated in git, so this is belt-and-suspenders.
+try:
+    db.init_db()
+except Exception:
+    pass
+
 DEFAULT_USER = "default_user"
 
 

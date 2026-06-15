@@ -18,9 +18,6 @@ _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
-from storage import db as _db  # noqa: E402
-_db.ensure_db()  # verify / rebuild DB before any service calls
-
 from service import annotation_service as svc  # noqa: E402
 
 ANNOTATOR_ID = "default_user"  # Phase 2: comes from auth/session
