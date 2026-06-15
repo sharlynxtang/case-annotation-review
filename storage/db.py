@@ -24,10 +24,14 @@ _local = threading.local()
 
 
 def get_connection(db_path: str = DEFAULT_DB_PATH) -> sqlite3.Connection:
-    """Return a per-thread SQLite connection with WAL + sane pragmas.
+    """Return a per-thread SQLite connection with DELETE journal mode + sane pragmas.
 
     Streamlit reruns on threads, so we cache one connection per thread.
     ``check_same_thread=False`` is safe because each thread owns its own conn.
+
+    DELETE journal mode (not WAL) is used because Streamlit Cloud clones the
+    repo without -wal/-shm files; WAL mode requires those companion files and
+    causes sqlite3.DatabaseError in that environment.
     """
     cache = getattr(_local, "conns", None)
     if cache is None:
@@ -38,16 +42,9 @@ def get_connection(db_path: str = DEFAULT_DB_PATH) -> sqlite3.Connection:
         os.makedirs(os.path.dirname(db_path), exist_ok=True)
         conn = sqlite3.connect(db_path, check_same_thread=False)
         conn.row_factory = sqlite3.Row
-        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("PRAGMA journal_mode=DELETE;")
         conn.execute("PRAGMA foreign_keys=ON;")
         conn.execute("PRAGMA busy_timeout=5000;")
-        # Merge any leftover WAL pages from a previous session into the main db
-        # file so that a stale WAL file cannot cause sqlite3.DatabaseError on
-        # first read (observed after Spaul-fix script left a non-empty WAL).
-        try:
-            conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
-        except Exception:
-            pass
         cache[db_path] = conn
     return conn
 
