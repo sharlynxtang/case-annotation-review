@@ -41,6 +41,13 @@ def get_connection(db_path: str = DEFAULT_DB_PATH) -> sqlite3.Connection:
         conn.execute("PRAGMA journal_mode=WAL;")
         conn.execute("PRAGMA foreign_keys=ON;")
         conn.execute("PRAGMA busy_timeout=5000;")
+        # Merge any leftover WAL pages from a previous session into the main db
+        # file so that a stale WAL file cannot cause sqlite3.DatabaseError on
+        # first read (observed after Spaul-fix script left a non-empty WAL).
+        try:
+            conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
+        except Exception:
+            pass
         cache[db_path] = conn
     return conn
 
